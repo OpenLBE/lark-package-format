@@ -269,3 +269,4 @@ Readme.txt
 - APK 文件名归一化为 `<packageName>.apk`
 - 已存在输出的时间戳备份
 
+Windows x64 Native AOT 版本可在本仓库的 [Releases](https://github.com/OpenLBE/lark-package-format/releases) 页面下载。
