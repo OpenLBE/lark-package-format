@@ -1,5 +1,7 @@
 # Lark Package Format
 
+[English](README.en.md) | **简体中文**
+
 `.lark` 是 **Lightweight Android Resource Kit** 的缩写，即“轻量级 Android 资源包”。
 
 它是一种面向 Android 应用交付的标准化资源包格式，用于把 APK、OBB、可选 XMPK、外部资源和复制规则统一打包，便于快速校验、分发和部署。
@@ -257,9 +259,9 @@ Readme.txt
 }
 ```
 
-## 参考实现
+## Rust 参考实现
 
-`Dubnium.LarkPackTool` 是一个 `.lark` 格式的参考打包与校验工具，支持：
+本仓库提供 `lark-pack-tool`，其行为与 `Dubnium.LarkPackTool` 对齐，支持：
 
 - 目录打包为 `.lark`
 - `.lark` 解包为目录
@@ -267,6 +269,42 @@ Readme.txt
 - Store ZIP / Zip64 输出
 - 规则 JSON 归一化为 `main.json`
 - APK 文件名归一化为 `<packageName>.apk`
-- 已存在输出的时间戳备份
+- 已存在输出的时间戳备份与失败恢复
 
-Windows x64 Native AOT 版本可在本仓库的 [Releases](https://github.com/OpenLBE/lark-package-format/releases) 页面下载。
+### 构建
+
+```powershell
+cargo build --release
+```
+
+产物位于：
+
+```text
+target\release\lark-pack-tool.exe
+```
+
+### 使用
+
+```powershell
+# 目录打包为 .lark
+.\target\release\lark-pack-tool.exe C:\home\apk\com.Company.ProductName
+
+# 解包 .lark
+.\target\release\lark-pack-tool.exe C:\home\apk\com.Company.ProductName.1.0.1.lark
+
+# 仅校验，不生成或解压文件
+.\target\release\lark-pack-tool.exe --check C:\home\apk\com.Company.ProductName
+
+# 跳过额外资源的 rules 覆盖检查
+.\target\release\lark-pack-tool.exe --ignore-uncovered --check C:\home\apk\com.Company.ProductName
+```
+
+### APK 读取
+
+Rust 标准库没有 APK 或 Android Binary XML（AXML）读取器。实现使用 Apache-2.0
+许可的纯 Rust crate `apk-info-axml`，从 APK ZIP 中读取并解析
+`AndroidManifest.xml` 和可选的 `resources.arsc`，获取 `package` 与
+`versionName`。外层 ZIP 读写使用 `zip` crate；`.lark` 写入时所有条目均为
+Store，并在需要时自动使用 Zip64。
+
+预编译版本可在本仓库的 [Releases](https://github.com/OpenLBE/lark-package-format/releases) 页面下载。
