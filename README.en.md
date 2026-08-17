@@ -96,7 +96,7 @@ main.1.com.Company.ProductName.obb
 - If present, exactly one is allowed.
 - It must be at the package root.
 - Its filename must be the last product-name segment of the APK package name followed by `.xmpk`.
-- The product name may contain only English letters.
+- The product name may contain only English letters and underscores.
 
 Example:
 

@@ -96,7 +96,7 @@ main.1.com.Company.ProductName.obb
 - 如果存在，必须有且仅有一个。
 - XMPK 必须位于包根目录。
 - XMPK 文件名必须为 APK 包名最后一段产品名加 `.xmpk`。
-- 产品名只允许英文字母。
+- 产品名只允许英文字母和下划线。
 
 示例：
 

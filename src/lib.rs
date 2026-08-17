@@ -451,10 +451,10 @@ fn validate_xmpk_file_name(entry_name: &str, package_name: &str) -> Result<()> {
         .map_or(package_name, |(_, product)| product);
     if !product_name
         .chars()
-        .all(|character| character.is_ascii_alphabetic())
+        .all(|character| character.is_ascii_alphabetic() || character == '_')
     {
         bail!(
-            "package product name must contain only English letters to use .xmpk: {product_name}"
+            "package product name must contain only English letters or underscores to use .xmpk: {product_name}"
         );
     }
     let expected_name = format!("{product_name}.xmpk");
@@ -957,5 +957,10 @@ mod tests {
             find_rules_json_file(&files, "com.example.demo").unwrap(),
             "main.json"
         );
+    }
+
+    #[test]
+    fn accepts_underscore_in_xmpk_product_name() {
+        assert!(validate_xmpk_file_name("WZRY_VR.xmpk", "com.Yomov.WZRY_VR").is_ok());
     }
 }
